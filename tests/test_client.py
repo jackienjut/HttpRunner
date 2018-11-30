@@ -70,3 +70,19 @@ class TestHttpClient(ApiServerUnittest):
         }
         setup_hook_prepare_kwargs(request)
         self.assertIsInstance(request["data"], bytes)
+
+    def test_prepare_kwargs_content_type_x_www_form_urlencoded(self):
+        request = {
+            "url": "/path",
+            "method": "POST",
+            "headers": {
+                "content-type": "application/x-www-form-urlencoded; charset=utf-8"
+            },
+            "data": {
+                "a": 1,
+                "b": 2
+            }
+        }
+        setup_hook_prepare_kwargs(request)
+        self.assertIsInstance(request["data"], bytes)
+        self.assertEqual(request["data"], b'a=1&b=2')
